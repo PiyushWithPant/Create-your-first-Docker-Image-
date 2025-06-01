@@ -1,0 +1,70 @@
+# Use official slim Python 3.11 image based on Debian (compatible with Ubuntu base)
+FROM python:3.11-slim
+
+# Install system dependencies (only what's needed for CUDA and Python packages)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    wget \
+    git \
+    ca-certificates \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libssl-dev \
+    libffi-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    zlib1g-dev \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    liblzma-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PyTorch 2.6.0 compiled with CUDA 12.4
+RUN pip install --upgrade pip && \
+    pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/test/cu126
+
+
+# Install all other Python dependencies with pinned versions
+RUN pip install \
+    datasets==3.6.0 \
+    transformers==4.52.2 \
+    trl==0.18.1 \
+    numpy==2.0.2 \
+    pandas==2.2.2 \
+    peft==0.15.2 \
+    tqdm==4.67.1 \
+    huggingface_hub==0.31.4 \
+    seaborn==0.13.2 \
+    openai==1.81.0 \
+    matplotlib==3.10.0 \
+    nltk==3.9.1 \
+    scikit-learn==1.6.1 \
+    plotly==5.24.1 \
+    requests==2.32.3 \
+    sentencepiece==0.2.0 \
+    tokenizers==0.21.1 \
+    accelerate==1.7.0 \
+    gym==0.25.2 \
+    scipy==1.15.3 \
+    tensorboard==2.18.0 \
+    wandb==0.19.11 \
+    notebook==7.4.3 \
+    ipywidgets \
+    regex
+
+
+RUN pip install "huggingface_hub[hf_xet]==0.31.4"
+
+# Download nltk punkt tokenizer data
+RUN python -m nltk.downloader punkt
+
+# Set default working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["bash"]
