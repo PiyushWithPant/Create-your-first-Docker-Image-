@@ -1,0 +1,53 @@
+FROM nvcr.io/nvidia/pytorch:25.05-py3
+
+# Install system dependencies for Jupyter + widgets
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install additional Python dependencies
+RUN pip install --upgrade pip && \
+    pip install \
+    datasets==3.6.0 \
+    transformers==4.52.4 \
+    trl==0.18.1 \
+    numpy==1.26.4 \
+    pandas==2.2.2 \
+    peft==0.15.2 \
+    tqdm==4.67.1 \
+    huggingface_hub==0.31.4 \
+    seaborn==0.13.2 \
+    openai==1.81.0 \
+    matplotlib==3.10.0 \
+    nltk==3.9.1 \
+    scikit-learn==1.6.1 \
+    plotly==5.24.1 \
+    requests==2.32.3 \
+    sentencepiece==0.2.0 \
+    tokenizers==0.21.1 \
+    accelerate==1.7.0 \
+    gym==0.25.2 \
+    scipy==1.15.3 \
+    tensorboard==2.16.2 \
+    wandb==0.19.11 \
+    notebook==7.4.3 \
+    ipywidgets \
+    jupyterlab \
+    jupyterlab_widgets \
+    jupyter \
+    regex \
+    "huggingface_hub[hf_xet]==0.31.4"
+
+
+# Default working directory
+WORKDIR /workspace
+
+
+# Default command
+CMD ["bash"]

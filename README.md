@@ -1,6 +1,10 @@
 # How to Create Your First Docker Image and Run a Python File in a Container 🛠️ 📦
 
 This guide will walk you through creating your first Docker image and running a Python script inside a Docker container.
+we will look at 2 ways:
+
+1. CPU-based Containers - `Dockerfile.cpu`
+2. GPU-based Containers - `Dockerfile.gpu`
 
 ## Prerequisites
 
@@ -20,6 +24,8 @@ cd myContainer/
 - You may have to do the formalitites of "Login/Sign in" in your docker desktop
 
 ## 1. Create a Dockerfile
+
+#### 1.1 CPU-based
 
 - Create a file named `Dockerfile` in your project directory with the following structure (modify them as per your need):
 
@@ -44,9 +50,15 @@ WORKDIR /app
 CMD ["bash"]
 ```
 
-- You can edit the `Dockerfile` as per your requirements. If you would like to work with LLMs and RLHF centered projects, you can simply use the `Dockerfile` provided with this repo.
+- You can use `Dockerfile.cpu` if you want to run your container in a CPU-only Environment with manual Python setup. Ideal for testing, lightweight inference, or non-GPU machines
 
-- It is a recommended practice to use a `requirements.txt` instead of installing packages directly.
+#### 1.2 GPU-based
+
+- You can use `Dockerfile.gpu` if you have GPU-based Environment. This provides you with the `nvidia/pytorch:25.05-py3` NVIDIA container image (you can modify the version as per your need).
+
+- Pre-installs PyTorch with CUDA support. Ideal for training or running models with GPU acceleration.
+
+PS - It is a recommended practice to use a `requirements.txt` instead of installing packages directly.
 
 ## 2. Build the Docker Image
 
@@ -56,7 +68,7 @@ CMD ["bash"]
 docker build -t <image_name>:version .
 ```
 
-- Don't forget that DOT in the end, it specifies the directory anddd this is going to take some time to run...
+- Don't forget that DOT in the end, it specifies the directory and this is going to take some time to run...
 
 - After the process is completed, you can check if your image is successfully created with the following command
 
